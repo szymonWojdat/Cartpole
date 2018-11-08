@@ -19,3 +19,11 @@ I decided to compare the average number of episodes needed to achieve score 200 
 * Uniform distribution: 11.95; mean = 0, range = 1
 
 **Interpretation:** the expected number of episodes needed in order to reach best score is smaller for the uniform distribution as it is equally likely to select any weight vector. In this particular environemnt the "good" weights must be lying in the area which is less likely picked by the normal distribution.
+
+## Hill climbing
+The authors have specified this approach in the following way:
+>The hill-climbing algorithm: Start with a random setting of the parameters, add a small amount of noise to the parameters, and evaluate the new parameter configuration. If it performs better than the old configuration, discard the old configuration and accept the new one. Repeat this process for some number of iterations. How long does it take to achieve perfect performance?
+
+Again, we're using here a 1x4 vector of weights, except this time, the weights get randomly generated only for the first run. In the next iterations, as described above, only a small amount of noise gets added to the weight vector so that it creates a new vector which gets saved only if the performance has improved.
+
+Similarly to random search, I decided to compare the performance between uniform and normal distributions.
