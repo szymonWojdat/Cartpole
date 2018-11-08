@@ -2,32 +2,47 @@ import gym
 import numpy as np
 from common import run_episode
 
-def evaluate(env, get_theta, n_episodes=10**4, max_reward=200):
+def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200):
 	"""
 	:param env: gym environment
-	:param get_theta: random weight generating function (eg. gaussian or uniform)
-	:param n_episodes: how many times should we keep searching for max
+	:param rand_distr: random weight generating distribution (gaussian or uniform)
+	:param n_episodes: how many times at most should we keep searching for max
 	:param max_reward: Target reward
 	:return: Number of iterations after which max_reward has been achieved for the first time.
 	"""
+	best_reward = None
+	if rand_distr == 'uniform':
+		best_theta = np.random.random(4) * 2 - 1
+		noise = lambda: (np.random.random(4) * 2 - 1) * 0.01
+	elif rand_distr == 'normal':
+		best_theta = np.random.randn(4) * 2 - 1
+		noise = lambda: (np.random.randn(4) * 2 - 1) * 0.01
+	else:
+		raise ValueError('rand_distr parameter must be either normal or uniform')
 
-	# TODO - implement hill climbing here
-
-	prev_reward = None
-	# get first (completely random) theta here
-	# theta = get_theta()
 	for i in range(n_episodes):
+		theta = best_theta + noise()
 		reward = run_episode(env, theta, render=False)
-		if prev_reward is None or reward > prev_reward:
-			pass
+		if best_reward is None or reward > best_reward:
+			best_theta = theta
+			best_reward = reward
 		if reward == max_reward:  # maximum reward in cartpole = 200. Env stops after reaching that
 			return i
-	return None
+	else:
+		return n_episodes
 
+def run_hill_climbing():
+	env = gym.make('CartPole-v0')
+	num_of_runs = 100
+	uniform_scores = []
+	normal_scores = []
 
-def main():
-	pass
+	for _ in range(num_of_runs):
+		uniform_scores.append(evaluate(env, 'uniform'))
+		normal_scores.append(evaluate(env, 'normal'))
+	env.close()
 
-
-if __name__ == '__main__':
-	main()
+	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated weights/noise:'\
+	      .format(num_of_runs))
+	print('UNIFORM distribution: {}'.format(np.mean(uniform_scores)))
+	print('NORMAL distribution: {}'.format(np.mean(normal_scores)))
