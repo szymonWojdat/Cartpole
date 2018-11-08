@@ -27,3 +27,11 @@ The authors have specified this approach in the following way:
 Again, we're using here a 1x4 vector of weights, except this time, the weights get randomly generated only for the first run. In the next iterations, as described above, only a small amount of noise gets added to the weight vector so that it creates a new vector which gets saved only if the performance has improved.
 
 Similarly to random search, I decided to compare the performance between uniform and normal distributions.
+
+Learning rate = 0.1:
+* Normal distribution: 8019.08; mean = 0, standard deviation = 1
+* Uniform distribution: 4977.13; mean = 0, range = 1
+
+Learning rate = 0.01:
+* Normal distribution: 8706.45; mean = 0, standard deviation = 1
+* Uniform distribution: 7167.89; mean = 0, range = 1
