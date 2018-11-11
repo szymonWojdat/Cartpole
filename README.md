@@ -14,11 +14,13 @@ Focusing on the last sentence, I decided to try out both the normal and uniform 
 
 The math behind behind this approach is actually pretty straightforward - given that the state of Cartpole environment is essentially a four-element vector, one can use a 1x4 vector of weights and calculate their dot product. The sign of this dot product is then used to indicate the direction in which the cartpole will be moved.
 
-I decided to compare the average number of episodes needed to achieve score 200 between these two distributions over the course of 100 runs, where one run means running Cartpole episodes until the best score is achieved. Results:
+I decided to compare the average number of episodes needed to achieve score 200 between these two distributions over the course of 1000 runs, where one run means running Cartpole episodes until the best score is achieved. Moreover, I decided to create a histogram of the results as calculating only the mean can be often misleading.
 * Normal distribution: 53.06; mean = 0, standard deviation = 1
 * Uniform distribution: 11.95; mean = 0, range = 1
 
-**Interpretation:** the expected number of episodes needed in order to reach best score is smaller for the uniform distribution as it is equally likely to select any weight vector. In this particular environemnt the "good" weights must be lying in the area which is less likely picked by the normal distribution.
+![1](https://github.com/szymonWojdat/Cartpole/blob/master/graphs/random_search_histograms.png)
+
+**Interpretation:** the expected number of episodes needed in order to reach best score is on average smaller for the uniform distribution as it is equally likely to select any weight vector. In this particular environemnt the "good" weights must be lying in the area which is less likely picked by the normal distribution.
 
 ## Hill climbing
 The authors have specified this approach in the following way:
@@ -26,12 +28,11 @@ The authors have specified this approach in the following way:
 
 Again, we're using here a 1x4 vector of weights, except this time, the weights get randomly generated only for the first run. In the next iterations, as described above, only a small amount of noise gets added to the weight vector so that it creates a new vector which gets saved only if the performance has improved.
 
-Similarly to random search, I decided to compare the performance between uniform and normal distributions.
+Similarly to random search, I decided to compare the performance between uniform and normal distributions using two performance metrics - average number of runs required to achieve perfect score and histograms. The learning rate (here: signal-to-noise ratio) was set to 0.1.
 
-Learning rate = 0.1:
-* Normal distribution: 8019.08; mean = 0, standard deviation = 1
-* Uniform distribution: 4977.13; mean = 0, range = 1
+* Normal distribution: 8140.06; mean = 0, standard deviation = 1
+* Uniform distribution: 5684.97; mean = 0, range = 1
 
-Learning rate = 0.01:
-* Normal distribution: 8706.45; mean = 0, standard deviation = 1
-* Uniform distribution: 7167.89; mean = 0, range = 1
+![2](https://github.com/szymonWojdat/Cartpole/blob/master/graphs/hill_climbing_histograms.png)
+
+**Interpretation:** the expected number of episodes needed in order to reach best score is on average smaller for the uniform distribution. Hill climbing performs much worse than random search on average, however many times hill climbing was able to find the correct weights pretty fast, especially when the noise was generated uniformly at random. This means that this approach is capable of achieving good results but also likely to get stuck. One solution to this could be dynamically scaling leraning rate - starting with a big one and decreasing it with the number of iterations.
