@@ -10,7 +10,7 @@ def main():
 	learn_rate = 0.1
 	print('\nHill climbing (learn_rate={}):'.format(learn_rate))
 	results = run_hill_climbing(learn_rate=learn_rate, num_runs=100)
-	histograms(results, 'hill_climbing', fix_axes=False)  # TODO - tune ranges
+	histograms(results, 'hill_climbing', fix_axes=False)
 
 if __name__ == '__main__':
 	main()
