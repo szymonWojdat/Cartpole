@@ -4,6 +4,7 @@ from common import run_episode
 
 def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200):
 	"""
+	Evaluates one episode of given env (here most likely cartpole)
 	:param env: gym environment
 	:param rand_distr: random weight generating distribution (gaussian or uniform)
 	:param n_episodes: how many times at most should we keep searching for max
@@ -26,18 +27,19 @@ def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200):
 	return n_episodes
 
 
-def run_random_search():
+def run_random_search(num_runs):
 	env = gym.make('CartPole-v0')
-	num_of_runs = 100
 	uniform_scores = []
 	normal_scores = []
 
-	for _ in range(num_of_runs):
+	for _ in range(num_runs):
 		uniform_scores.append(evaluate(env, 'uniform'))
 		normal_scores.append(evaluate(env, 'normal'))
 	env.close()
 
-	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated weights:'\
-	      .format(num_of_runs))
+	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated weights:' \
+	      .format(num_runs))
 	print('UNIFORM distribution: {}'.format(np.mean(uniform_scores)))
 	print('NORMAL distribution: {}'.format(np.mean(normal_scores)))
+
+	return {'uniform': uniform_scores, 'normal': normal_scores}
