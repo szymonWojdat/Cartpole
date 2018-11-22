@@ -2,13 +2,14 @@ import gym
 import numpy as np
 from common import run_episode
 
-def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200):
+def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200, render=False):
 	"""
 	Evaluates one episode of given env (here most likely cartpole)
 	:param env: gym environment
 	:param rand_distr: random weight generating distribution (gaussian or uniform)
 	:param n_episodes: how many times at most should we keep searching for max
 	:param max_reward: Target reward
+	:param render: Whether to render the env or not
 	:return: Number of iterations after which max_reward has been achieved for the first time.
 	"""
 
@@ -21,7 +22,7 @@ def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200):
 
 	for i in range(n_episodes):
 		theta = get_theta()
-		reward = run_episode(env, theta, render=False)
+		reward = run_episode(env, theta, render=render)
 		if reward == max_reward:  # maximum reward in cartpole = 200. Env stops after reaching that
 			return i
 	return n_episodes

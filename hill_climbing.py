@@ -2,7 +2,7 @@ import gym
 import numpy as np
 from common import run_episode
 
-def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200):
+def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200, render=False):
 	"""
 	Evaluates one episode of given env (here most likely cartpole)
 	:param env: gym environment
@@ -10,6 +10,7 @@ def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200):
 	:param alpha: learning rate
 	:param n_episodes: how many times at most should we keep searching for max
 	:param max_reward: Target reward
+	:param render: Whether to render the env or not
 	:return: Number of iterations after which max_reward has been achieved for the first time.
 	"""
 	best_reward = None
@@ -24,7 +25,7 @@ def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200):
 
 	for i in range(n_episodes):
 		theta = best_theta + noise()
-		reward = run_episode(env, theta, render=False)
+		reward = run_episode(env, theta, render=render)
 		if best_reward is None or reward > best_reward:
 			best_theta = theta
 			best_reward = reward
