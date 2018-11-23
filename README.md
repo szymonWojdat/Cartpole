@@ -36,3 +36,6 @@ Similarly to random search, I decided to compare the performance between uniform
 ![2](https://github.com/szymonWojdat/Cartpole/blob/master/graphs/hill_climbing_histograms.png)
 
 **Interpretation:** the expected number of episodes needed in order to reach best score is on average smaller for the uniform distribution. Hill climbing performs much worse than random search on average, however many times hill climbing was able to find the correct weights pretty fast, especially when the noise was generated uniformly at random. This means that this approach is capable of achieving good results but also likely to get stuck. One solution to this could be dynamically scaling leraning rate - starting with a big one and decreasing it with the number of iterations.
+
+## Policy gradient
+Work in progress.
