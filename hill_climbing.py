@@ -2,6 +2,7 @@ import gym
 import numpy as np
 from common import run_episode
 
+
 def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200, render=False):
 	"""
 	Evaluates one episode of given env (here most likely cartpole)
@@ -34,6 +35,7 @@ def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200, render=Fa
 	else:
 		return n_episodes
 
+
 def run_hill_climbing(learn_rate, num_runs):
 	env = gym.make('CartPole-v0')
 	uniform_scores = []
@@ -44,8 +46,8 @@ def run_hill_climbing(learn_rate, num_runs):
 		normal_scores.append(evaluate(env, 'normal', learn_rate))
 	env.close()
 
-	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated weights/noise:' \
-	      .format(num_runs))
+	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated\
+		weights/noise:'.format(num_runs))
 	print('UNIFORM distribution: {}'.format(np.mean(uniform_scores)))
 	print('NORMAL distribution: {}'.format(np.mean(normal_scores)))
 

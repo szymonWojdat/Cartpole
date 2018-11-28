@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def histograms(results, name, fix_axes=True, x_range=(0, 100), y_range=0.08, save=True):
 	fig, (ax1, ax2) = plt.subplots(1, 2)
 

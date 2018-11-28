@@ -2,6 +2,7 @@ import gym
 import numpy as np
 from common import run_episode
 
+
 def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200, render=False):
 	"""
 	Evaluates one episode of given env (here most likely cartpole)
@@ -38,8 +39,8 @@ def run_random_search(num_runs):
 		normal_scores.append(evaluate(env, 'normal'))
 	env.close()
 
-	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated weights:' \
-	      .format(num_runs))
+	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly\
+	generated weights:'.format(num_runs))
 	print('UNIFORM distribution: {}'.format(np.mean(uniform_scores)))
 	print('NORMAL distribution: {}'.format(np.mean(normal_scores)))
 

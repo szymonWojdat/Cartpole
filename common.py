@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def run_episode(env, theta, render=False):
 	"""
 	Runs a single episode given env and weight vector.
