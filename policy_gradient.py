@@ -52,7 +52,7 @@ def value_gradient():
 		return calc_values, state, actual_values, optimizer, loss
 
 
-def run_episode(env, policy_grad, value_grad, sess):
+def run_episode(env, policy_grad, value_grad, sess, lmbd, render=False):
 	p_probabilities, p_state, p_actions, p_advantages, p_optimizer = policy_grad
 	v_calc_value, v_state, v_actual_values, v_optimizer, v_loss = value_grad
 	observation = env.reset()
@@ -66,6 +66,7 @@ def run_episode(env, policy_grad, value_grad, sess):
 	# rollout an episode
 	done = False
 	while not done:
+		if render: env.render()
 		# get an action according to the policy
 		obs_vector = np.expand_dims(observation, axis=0)
 		probs = sess.run(p_probabilities, feed_dict={p_state: obs_vector})
@@ -93,7 +94,7 @@ def run_episode(env, policy_grad, value_grad, sess):
 		for i in range(future_transitions):
 			reward_in_timestep_j = transitions_memo[transition_num + i][2]
 			future_reward += reward_in_timestep_j * current_discount
-			current_discount = current_discount * 0.97  # todo - replace with lambda param
+			current_discount = current_discount * lmbd
 
 		# get current value estimation
 		obs_vector = np.expand_dims(obs, axis=0)
@@ -117,28 +118,26 @@ def run_episode(env, policy_grad, value_grad, sess):
 	return totalreward
 
 
-def main():
-	env = gym.make('CartPole-v0')
-	# env.monitor.start('cartpole-hill/', force=True)
-	# env.Monitor('cartpole-hill/', force=True)
+def evaluate(env, n_episodes=10**4, max_reward=200, render=False, discount=0.97):
 	policy_grad = policy_gradient()
 	value_grad = value_gradient()
 	sess = tf.InteractiveSession()
 	sess.run(tf.global_variables_initializer())
-	for i in range(2000):
-		reward = run_episode(env, policy_grad, value_grad, sess)
-		if reward == 200:
-			print("reward 200")
-			print(i)
-			break
-	t = 0
-	for _ in range(1000):
-		reward = run_episode(env, policy_grad, value_grad, sess)
-		t += reward
-	print(t / 1000)
-	# env.monitor.close()
+
+	for i in range(n_episodes):
+		reward = run_episode(env, policy_grad, value_grad, sess, discount, render=render)
+		if reward == max_reward:  # maximum reward in cartpole = 200. Env stops after reaching that
+			return i
+	return n_episodes
+
+
+def run_policy_gradient(num_runs, render=False):
+	env = gym.make('CartPole-v0')
+	scores = []
+
+	for _ in range(num_runs):
+		scores.append(evaluate(env, render=render))
 	env.close()
+	print('Policy gradient mean score: {}'.format(np.mean(scores)))
 
-
-if __name__ == '__main__':
-	main()
+	return scores
