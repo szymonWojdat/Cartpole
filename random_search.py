@@ -3,14 +3,14 @@ import numpy as np
 from common import run_episode
 
 
-def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200, render=False):
+def evaluate(env, rand_distr, render=False, n_episodes=10**4, max_reward=200):
 	"""
 	Evaluates one episode of given env (here most likely cartpole)
 	:param env: gym environment
 	:param rand_distr: random weight generating distribution (gaussian or uniform)
+	:param render: Whether to render the env or not
 	:param n_episodes: how many times at most should we keep searching for max
 	:param max_reward: Target reward
-	:param render: Whether to render the env or not
 	:return: Number of iterations after which max_reward has been achieved for the first time.
 	"""
 
@@ -29,14 +29,14 @@ def evaluate(env, rand_distr, n_episodes=10**4, max_reward=200, render=False):
 	return n_episodes
 
 
-def run_random_search(num_runs):
+def run_random_search(num_runs, render=False):
 	env = gym.make('CartPole-v0')
 	uniform_scores = []
 	normal_scores = []
 
 	for _ in range(num_runs):
-		uniform_scores.append(evaluate(env, 'uniform'))
-		normal_scores.append(evaluate(env, 'normal'))
+		uniform_scores.append(evaluate(env, 'uniform', render))
+		normal_scores.append(evaluate(env, 'normal', render))
 	env.close()
 
 	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly\

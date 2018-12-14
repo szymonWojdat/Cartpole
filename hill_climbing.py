@@ -3,15 +3,15 @@ import numpy as np
 from common import run_episode
 
 
-def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200, render=False):
+def evaluate(env, rand_distr, alpha, render=False, n_episodes=10**4, max_reward=200):
 	"""
 	Evaluates one episode of given env (here most likely cartpole)
 	:param env: gym environment
 	:param rand_distr: random weight generating distribution (gaussian or uniform)
 	:param alpha: learning rate
+	:param render: Whether to render the env or not
 	:param n_episodes: how many times at most should we keep searching for max
 	:param max_reward: Target reward
-	:param render: Whether to render the env or not
 	:return: Number of iterations after which max_reward has been achieved for the first time.
 	"""
 	best_reward = None
@@ -36,14 +36,15 @@ def evaluate(env, rand_distr, alpha, n_episodes=10**4, max_reward=200, render=Fa
 		return n_episodes
 
 
-def run_hill_climbing(learn_rate, num_runs):
+# todo - make this generic (across hill climbing and random search)
+def run_hill_climbing(learn_rate, num_runs, render=False):
 	env = gym.make('CartPole-v0')
 	uniform_scores = []
 	normal_scores = []
 
 	for _ in range(num_runs):
-		uniform_scores.append(evaluate(env, 'uniform', learn_rate))
-		normal_scores.append(evaluate(env, 'normal', learn_rate))
+		uniform_scores.append(evaluate(env, 'uniform', learn_rate, render))
+		normal_scores.append(evaluate(env, 'normal', learn_rate, render))
 	env.close()
 
 	print('Avg. (out of {}) number of episodes after which return = 200 has been achieved for randomly generated\
