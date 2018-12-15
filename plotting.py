@@ -22,6 +22,20 @@ def histograms(results, name, fix_axes=True, x_range=(0, 100), y_range=0.08, sav
 		xlabel='Episodes required to solve cartpole',
 		title='Normal distribution'
 	)
-	plt.show()
 	if save:
 		plt.savefig('graphs/{}_histograms.png'.format(name))
+	plt.show()
+
+
+def histogram(results, name, title, save=True):
+	fig = plt.figure()
+	ax = fig.gca()
+	ax.hist(results, bins=50, density=True, facecolor='b', alpha=0.75)
+	ax.set(
+		xlabel='Episodes required to solve cartpole',
+		ylabel='Frequency',
+		title=title
+	)
+	if save:
+		plt.savefig('graphs/{}_histograms.png'.format(name))
+	plt.show()
