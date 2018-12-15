@@ -2,6 +2,7 @@ import tensorflow as tf
 import random
 import gym
 import numpy as np
+from tqdm import tqdm
 
 
 def policy_gradient():
@@ -119,6 +120,7 @@ def run_episode(env, policy_grad, value_grad, sess, lmbd, render=False):
 
 
 def evaluate(env, n_episodes=10**4, max_reward=200, render=False, discount=0.97):
+	tf.reset_default_graph()
 	policy_grad = policy_gradient()
 	value_grad = value_gradient()
 	sess = tf.InteractiveSession()
@@ -135,7 +137,7 @@ def run_policy_gradient(num_runs, render=False):
 	env = gym.make('CartPole-v0')
 	scores = []
 
-	for _ in range(num_runs):
+	for _ in tqdm(range(num_runs)):
 		scores.append(evaluate(env, render=render))
 	env.close()
 	print('Policy gradient mean score: {}'.format(np.mean(scores)))

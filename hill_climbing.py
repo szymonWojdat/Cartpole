@@ -1,6 +1,7 @@
 import gym
 import numpy as np
 from common import run_episode
+from tqdm import tqdm
 
 
 def evaluate(env, rand_distr, alpha, render=False, n_episodes=10**4, max_reward=200):
@@ -42,7 +43,7 @@ def run_hill_climbing(learn_rate, num_runs, render=False):
 	uniform_scores = []
 	normal_scores = []
 
-	for _ in range(num_runs):
+	for _ in tqdm(range(num_runs)):
 		uniform_scores.append(evaluate(env, 'uniform', learn_rate, render))
 		normal_scores.append(evaluate(env, 'normal', learn_rate, render))
 	env.close()
